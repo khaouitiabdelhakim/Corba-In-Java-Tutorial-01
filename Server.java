@@ -44,10 +44,11 @@ public class Server {
 
         String ref = orb.object_to_string(hello);
         String refFile = "Hello.ref";
-        FileOutputStream file = new FileOutputStream(refFile);
-        PrintWriter out = new PrintWriter(file);
-        out.println(ref);
-        file.close();
+        try (FileOutputStream file = new FileOutputStream(refFile);
+             PrintWriter out = new PrintWriter(file)) {
+            out.println(ref);
+            System.out.println("server en attente des clients\nRef: "+ref);
+        } catch (Exception ignored) {}
 
         try {
             if (manager != null) {
